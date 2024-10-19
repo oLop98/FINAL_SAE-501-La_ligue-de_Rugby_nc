@@ -60,7 +60,7 @@ if (!isset($_SESSION['user_id'])) {
         }
     </style>
  <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+ <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="index.php">
                 <img src="../assets/logo.jpeg" width="70" alt="Logo de la ligue de rugby de Nouvelle-Calédonie.">
@@ -84,9 +84,14 @@ if (!isset($_SESSION['user_id'])) {
                         </li>
                     <?php endif; ?>
 
-                    <?php if ($user['DroitActualite'] == 1): ?>
+                    <?php if ($user['DroitAction'] == 1): ?>
                         <li class="nav-item">
                             <a class="nav-link" href="addaction.php">Gestion des Actions</a>
+                        </li>
+                    <?php endif; ?>
+                                        <?php if ($user['DroitActualite'] == 1): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="addactualite.php">Gestion des Résultats</a>
                         </li>
                     <?php endif; ?>
                     <?php if ($user['DroitClub'] == 1): ?>

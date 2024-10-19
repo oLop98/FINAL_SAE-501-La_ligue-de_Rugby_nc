@@ -8,12 +8,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = $_POST['password'];
 
     // Préparer et exécuter la requête pour vérifier les informations d'identification
-    $stmt = $pdo->prepare('SELECT * FROM users WHERE username = :username AND password = MD5(:password)');
-    $stmt->execute(['username' => $username, 'password' => $password]);
+    $stmt = $pdo->prepare('SELECT * FROM users WHERE username = :username');
+    $stmt->execute(['username' => $username]);
     $user = $stmt->fetch();
 
-    if ($user) {
-        // Si l'utilisateur est trouvé, on enregistre son ID dans la session
+    if ($user && password_verify($password, $user['password'])) {
+        // Si l'utilisateur est trouvé et le mot de passe vérifié, on enregistre son ID dans la session
         $_SESSION['user_id'] = $user['id'];  
         $_SESSION['username'] = $user['username'];  
         header('Location: index.php');
@@ -54,3 +54,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 </body>
 </html>
+

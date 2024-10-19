@@ -43,11 +43,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
         $droitActualite = isset($_POST['DroitActualite']) ? 1 : 0;
         $droitUser = isset($_POST['DroitUser']) ? 1 : 0;
         $droitClub = isset($_POST['DroitClub']) ? 1 : 0;
-        $droitPartenaire = isset($_POST['DroitPartenaire']) ? 1 : 0; // Nouveau champ
+        $droitPartenaire = isset($_POST['DroitPartenaire']) ? 1 : 0;
+        $droitAction = isset($_POST['DroitAction']) ? 1 : 0; // Nouveau champ
 
         // Préparer et exécuter l'insertion des données
-        $stmt = $pdo->prepare('INSERT INTO users (username, password, DroitScore, DroitActualite, DroitUser, DroitClub, DroitPartenaire) 
-                               VALUES (:username, :password, :droitScore, :droitActualite, :droitUser, :droitClub, :droitPartenaire)');
+        $stmt = $pdo->prepare('INSERT INTO users (username, password, DroitScore, DroitActualite, DroitUser, DroitClub, DroitPartenaire, DroitAction) 
+                               VALUES (:username, :password, :droitScore, :droitActualite, :droitUser, :droitClub, :droitPartenaire, :droitAction)');
         $stmt->execute([
             'username' => $username,
             'password' => $password,
@@ -55,7 +56,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
             'droitActualite' => $droitActualite,
             'droitUser' => $droitUser,
             'droitClub' => $droitClub,
-            'droitPartenaire' => $droitPartenaire  // Nouveau champ
+            'droitPartenaire' => $droitPartenaire,
+            'droitAction' => $droitAction  // Nouveau champ
         ]);
 
         // Rediriger après l'ajout
@@ -71,16 +73,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
     $droitActualite = isset($_POST['DroitActualite']) ? 1 : 0;
     $droitUser = isset($_POST['DroitUser']) ? 1 : 0;
     $droitClub = isset($_POST['DroitClub']) ? 1 : 0;
-    $droitPartenaire = isset($_POST['DroitPartenaire']) ? 1 : 0; // Nouveau champ
+    $droitPartenaire = isset($_POST['DroitPartenaire']) ? 1 : 0;
+    $droitAction = isset($_POST['DroitAction']) ? 1 : 0; // Nouveau champ
 
     // Mettre à jour les informations dans la base de données
-    $stmt = $pdo->prepare('UPDATE users SET DroitScore = :droitScore, DroitActualite = :droitActualite, DroitUser = :droitUser, DroitClub = :droitClub, DroitPartenaire = :droitPartenaire WHERE id = :id');
+    $stmt = $pdo->prepare('UPDATE users SET DroitScore = :droitScore, DroitActualite = :droitActualite, DroitUser = :droitUser, DroitClub = :droitClub, DroitPartenaire = :droitPartenaire, DroitAction = :droitAction WHERE id = :id');
     $stmt->execute([
         'droitScore' => $droitScore,
         'droitActualite' => $droitActualite,
         'droitUser' => $droitUser,
         'droitClub' => $droitClub,
-        'droitPartenaire' => $droitPartenaire,  // Nouveau champ
+        'droitPartenaire' => $droitPartenaire,
+        'droitAction' => $droitAction,  // Nouveau champ
         'id' => $id
     ]);
 
@@ -159,6 +163,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
                     <input type="checkbox" class="form-check-input" id="DroitPartenaire" name="DroitPartenaire">
                     <label class="form-check-label" for="DroitPartenaire">Droit de gérer les Partenaires</label>
                 </div>
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="DroitAction" name="DroitAction">
+                    <label class="form-check-label" for="DroitAction">Droit de gérer les Actions</label>
+                </div>
                 <button type="submit" class="btn btn-success">Ajouter l'utilisateur</button>
             </form>
         </div>
@@ -169,10 +177,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
                 <tr>
                     <th>Nom d'utilisateur</th>
                     <th>Gestion Score</th>
-                    <th>Gestion Action</th>
+                    <th>Gestion Actualité</th>
                     <th>Gestion User</th>
                     <th>Gestion Club</th>
                     <th>Gestion Partenaire</th>
+                    <th>Gestion Action</th>
                     <th></th>
                 </tr>
             </thead>
@@ -188,6 +197,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
                     echo '<td>' . ($row['DroitUser'] ? 'Oui' : 'Non') . '</td>';
                     echo '<td>' . ($row['DroitClub'] ? 'Oui' : 'Non') . '</td>';
                     echo '<td>' . ($row['DroitPartenaire'] ? 'Oui' : 'Non') . '</td>';
+                    echo '<td>' . ($row['DroitAction'] ? 'Oui' : 'Non') . '</td>';
                     echo '<td>';
                     echo '<button class="btn btn-link edit-icon" onclick="editUser(' . htmlspecialchars($row['id']) . ')"><i class="bi bi-pencil-fill"></i></button>';
                     echo '<form method="POST" action="addusers.php" onsubmit="return confirm(\'Êtes-vous sûr de vouloir supprimer cet utilisateur ?\');" style="display:inline-block;">';
@@ -209,6 +219,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
                     echo '<td><input type="checkbox" name="DroitUser" ' . ($row['DroitUser'] ? 'checked' : '') . '></td>';
                     echo '<td><input type="checkbox" name="DroitClub" ' . ($row['DroitClub'] ? 'checked' : '') . '></td>';
                     echo '<td><input type="checkbox" name="DroitPartenaire" ' . ($row['DroitPartenaire'] ? 'checked' : '') . '></td>';
+                    echo '<td><input type="checkbox" name="DroitAction" ' . ($row['DroitAction'] ? 'checked' : '') . '></td>'; // Ajout de DroitAction
                     echo '<td>';
                     echo '<button type="submit" class="btn btn-success btn-sm">Confirmer</button>';
                     echo '</td>';
