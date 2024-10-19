@@ -1,0 +1,21 @@
+RewriteEngine On
+
+# Réécrire les URLs avec des IDs
+RewriteRule ^action/([0-9]+)$ action.php?id=$1 [L,QSA]
+
+# Masquer les extensions .php pour toutes les autres pages
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([^\.]+)$ $1.php [NC,L]
+
+# Réécriture des autres pages
+RewriteRule ^nos-actions$ nos-actions.php [L,QSA]
+RewriteRule ^qui-sommes-nous$ qui-sommes-nous.php [L,QSA]
+RewriteRule ^notre-organisation$ notre-organisation.php [L,QSA]
+RewriteRule ^histoire-rugby$ histoire-rugby.php [L,QSA]
+RewriteRule ^resultats$ resultats.php [L,QSA]
+RewriteRule ^actualites$ actualites.php [L,QSA]
+RewriteRule ^politique-de-confidentialite$ politique-confidentialite.php [L,QSA]
+RewriteRule ^cookie$ cookie.php [L,QSA]
+RewriteRule ^mentions-legales$ mentions-legales.php [L,QSA]
+RewriteRule ^jeu$ /phaser/jeu.php [L,QSA]
+

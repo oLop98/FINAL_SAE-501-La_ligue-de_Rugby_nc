@@ -1,0 +1,16 @@
+@font-face {
+    font-family: "circe";
+    src: url(../assets/fonts/circe-regular.otf) format("opentype");
+}
+
+/* Appliquer la police Circe à tous les éléments de la page */
+html, body, * {
+    font-family: "circe", sans-serif !important;
+    font-weight: 400; /* Utiliser un poids de police standard */
+    font-style: normal;
+}
+
+/* Optionnel : si tu veux des titres avec un poids plus fort */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+}
